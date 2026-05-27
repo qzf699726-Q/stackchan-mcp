@@ -20,8 +20,8 @@ jobs:
         working-directory: firmware
         run: |
           cp config.h.example config.h
-          sed -i "s/your-home-ssid/${{ secrets.WIFI_SSID }}/g" config.h
-          sed -i "s/your-home-password/${{ secrets.WIFI_PASSWORD }}/g" config.h
+          sed -i "s/your-ssid/${{ secrets.WIFI_SSID }}/g" config.h
+          sed -i "s/your-password/${{ secrets.WIFI_PASSWORD }}/g" config.h
 
       - name: Build
         working-directory: firmware
