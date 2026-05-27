@@ -33,4 +33,21 @@
 // ディスプレイ
 #define DISPLAY_BRIGHTNESS  70
 
+// マイク詳細設定
+#define MIC_MAGNIFICATION       16
+#define MIC_NOISE_FILTER_LEVEL  0
+#define MIC_DMA_BUF_LEN         256
+#define MIC_DMA_BUF_COUNT       6
+
+// HTTP タイムアウト
+#define HTTP_TIMEOUT_STT        15000
+#define HTTP_TIMEOUT_TTS        15000
+#define HTTP_TIMEOUT_CHAT       30000
+#define HTTP_TIMEOUT_CAMERA     30000
+#define ERR_TIMEOUT             -1
+
+// 通知音
+#define NOTIFICATION_FREQ       1000
+#define NOTIFICATION_DURATION   100
+
 #endif
