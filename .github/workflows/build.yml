@@ -1,0 +1,34 @@
+name: Build Firmware
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install PlatformIO
+        run: pip install platformio
+
+      - name: Create config.h
+        working-directory: firmware
+        run: |
+          cp config.h.example config.h
+          sed -i "s/your-home-ssid/${{ secrets.WIFI_SSID }}/g" config.h
+          sed -i "s/your-home-password/${{ secrets.WIFI_PASSWORD }}/g" config.h
+
+      - name: Build
+        working-directory: firmware
+        run: pio run -e m5stack-cores3
+
+      - name: Upload firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: stackchan-firmware
+          path: firmware/.pio/build/m5stack-cores3/
