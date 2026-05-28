@@ -189,7 +189,7 @@ void updateMicrophone() {
                     pre_buf_full  = false;
                     silence_start_ms = 0;
                     mic_state = MIC_RECORDING;
-                    setFaceExpression(FACE_LISTENING);
+                    if (!isMcpMode()) setFaceExpression(FACE_LISTENING);
                     Serial.printf("[MIC] Triggered -> RECORDING (pre-buffer: %u samples)\n",
                                   (unsigned)recorded_samples);
                 }
@@ -219,11 +219,11 @@ void updateMicrophone() {
                 mic_state = MIC_SENDING;
                 Serial.printf("[MIC] Record end: samples=%u reason=%s\n",
                               (unsigned)recorded_samples, maxed ? "max" : "silence");
-                setFaceExpression(FACE_THINKING);
+                if (!isMcpMode()) setFaceExpression(FACE_THINKING);
 
                 bool ok = sendAudioToServer(record_buffer, recorded_samples);
                 Serial.printf("[MIC] Send/Process result=%s\n", ok ? "OK" : "NG");
-                if (!ok) setFaceExpression(FACE_IDLE);
+                if (!ok && !isMcpMode()) setFaceExpression(FACE_IDLE);
                 mic_state = MIC_IDLE;
             }
             break;
@@ -252,7 +252,6 @@ static bool sendAudioToServer(int16_t* audio_data, size_t sample_count) {
     if (isMcpMode()) {
         Serial.println("[MIC] MCP mode: stored, skip transcribe");
         free(wav);
-        setFaceExpression(FACE_IDLE);
         return true;
     }
 
